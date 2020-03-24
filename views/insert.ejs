@@ -62,49 +62,51 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
   <body class="col-xs-x" style="text-align: center;">
-    <form action="/list/insert" method="post">
-      <input type="hidden" name="_id" value="<%= list._id %>" />
+    <div class="container-md">
+      <form action="/list/insert" method="post">
+        <input type="hidden" name="_id" value="<%= list._id %>" />
 
-      <div>
-        <input
-          class="form-control"
-          id="title"
-          name="title"
-          placeholder="제목"
-          value="<%= list.title %>"
-        />
-      </div>
-      <div>
-        <textarea
-          class="form-control"
-          rows="5"
-          id="content"
-          name="content"
-          placeholder="내용"
-          style="margin-bottom: 5%; margin-top: 2%;"
-        >
+        <div>
+          <input
+            class="form-control"
+            id="title"
+            name="title"
+            placeholder="제목"
+            value="<%= list.title %>"
+          />
+        </div>
+        <div>
+          <textarea
+            class="form-control"
+            rows="5"
+            id="content"
+            name="content"
+            placeholder="내용"
+            style="margin-bottom: 5%; margin-top: 2%;"
+          >
 <%= list.content %></textarea
+          >
+          <input name="insertDate" type="hidden" />
+        </div>
+
+        <button
+          class="btn btn-secondary"
+          type="button"
+          onclick="document.location.href='/'"
         >
-        <input name="insertDate" type="hidden" />
-      </div>
+          홈으로
+        </button>
 
-      <button
-        class="btn btn-secondary"
-        type="button"
-        onclick="document.location.href='/'"
-      >
-        홈으로
-      </button>
+        <% if(insertBtn == "OK"){ %>
 
-      <% if(insertBtn == "OK"){ %>
+        <button id="insertButton" type="button" class="btn btn-light">
+          작성완료
+        </button>
 
-      <button id="insertButton" type="button" class="btn btn-light">
-        작성완료
-      </button>
-
-      <% }%> <% if(delBtn == "OK"){ %>
-      <button class="deleteButton btn btn-danger" type="button">삭제</button>
-      <% }%>
-    </form>
+        <% }%> <% if(delBtn == "OK"){ %>
+        <button class="deleteButton btn btn-danger" type="button">삭제</button>
+        <% }%>
+      </form>
+    </div>
   </body>
 </html>
