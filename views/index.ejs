@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+  </head>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!-- Latest compiled and minified CSS -->
+  <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+  />
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+  <script>
+    $(function() {
+      $("#checkSubmitButton").click(function() {
+        var arr = [];
+
+        $("input[name=complete]:checked").each(function() {
+          var comVal = $(this).val();
+
+          arr.push(comVal);
+        });
+
+        alert(arr);
+
+        //  = true;
+        $.ajax({
+          url: "/list/checkupdate",
+          traditional: true,
+          data: { arr: arr },
+          type: "post",
+          success: function(result) {
+            alert(result);
+            document.location.href = "/";
+          },
+          error: function() {
+            alert("서버 에러");
+          }
+        });
+      });
+
+      $(".complete").on("change", function() {
+        $("#checkSubmitButton").css("visibility", "visible");
+      });
+
+      $("#insertButton").click(function() {
+        document.location.href = "/list/insert";
+      });
+
+      $(".trClick").on("click", function() {
+        var _id = $(this)
+          .children("._id")
+          .text();
+
+        // on일 시 checked
+        var complete = $(this)
+          .find(".checkedBox")
+          .val();
+
+        // var complete = $(this).find(".checkedBox").val;
+
+        // alert(_id + "," + complete);
+
+        document.location.href = "/list/update/" + _id + "/" + complete;
+      });
+    });
+  </script>
+
+  <body>
+    <div class="col-xs-x" style="text-align: center;display: grid;">
+      <h1 class="jumbotron"><%= title %></h1>
+
+      <div class="buttonGroup">
+        <button
+          class="btn btn-light"
+          id="insertButton"
+          type="button"
+          style="float:left"
+        >
+          작성
+        </button>
+        <button
+          class="btn btn-danger"
+          id="checkSubmitButton"
+          type="button"
+          style="visibility: hidden; float: right;"
+        >
+          체크완료
+        </button>
+      </div>
+
+      <table class="table table-dark table-striped" style="text-align: center;">
+        <tr>
+          <th>제목</th>
+          <th>내용</th>
+          <th>등록날짜</th>
+          <th>완료여부</th>
+          <th>완료날짜</th>
+        </tr>
+
+        <% list.forEach(function(l){ %> <% if(list == null){ %>
+
+        <tr>
+          <td colspan="3">내용 없음</td>
+        </tr>
+
+        <% } %>
+
+        <tr class="trClick">
+          <td class="_id" style="display: none;"><%= l._id%></td>
+          <td><%= l.title %></td>
+          <td><%= l.content %></td>
+          <td><%= l.insertDate %></td>
+          <td onclick="event.cancelBubble=true">
+            <% if(l.complete == "ok"){ %>
+
+            <input
+              class="checkedBox"
+              type="checkbox"
+              checked="checked"
+              disabled="disabled"
+            />
+
+            <% }else{ %>
+
+            <input
+              name="complete"
+              class="complete"
+              type="checkbox"
+              value="<%= l._id%>"
+            />
+
+            <% } %>
+          </td>
+          <td><%= l.cDate %></td>
+        </tr>
+
+        <% }) %>
+      </table>
+    </div>
+  </body>
+</html>
